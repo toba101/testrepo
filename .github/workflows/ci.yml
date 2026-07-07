@@ -24,5 +24,5 @@ jobs:
       - name: Run ESLint
         run: npx eslint .
 
-      - name: Run Jest tests
-        run: npm test -- --verbose
+      - name: Run Jest tests with coverage
+        run: npm test -- --coverage --verbose
