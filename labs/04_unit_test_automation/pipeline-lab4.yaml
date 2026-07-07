@@ -1,0 +1,27 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: lab4-pipeline
+spec:
+  workspaces:
+    - name: shared-workspace
+
+  tasks:
+    - name: echo-task
+      taskRef:
+        name: echo
+      params:
+        - name: message
+          value: "Workspace will be cleaned next"
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+
+    - name: cleanup-task
+      runAfter:
+        - echo-task
+      taskRef:
+        name: cleanup
+      workspaces:
+        - name: source
+          workspace: shared-workspace

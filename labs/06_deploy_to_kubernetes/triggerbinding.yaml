@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1beta1
+kind: TriggerBinding
+metadata:
+  name: ci-triggerbinding
+spec:
+  params:
+    - name: repo-url
+      value: $(body.repository.clone_url)
+    - name: branch
+      value: $(body.ref)
+    - name: message
+      value: "Triggered CI pipeline from GitHub"

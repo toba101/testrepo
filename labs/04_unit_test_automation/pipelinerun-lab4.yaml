@@ -1,0 +1,10 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: lab4-pipelinerun
+spec:
+  pipelineRef:
+    name: lab4-pipeline
+  workspaces:
+    - name: shared-workspace
+      emptyDir: {}

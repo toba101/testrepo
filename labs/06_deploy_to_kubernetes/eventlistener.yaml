@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: ci-eventlistener
+spec:
+  serviceAccountName: tekton-triggers-example-sa
+  triggers:
+    - name: ci-trigger
+      bindings:
+        - ref: ci-triggerbinding
+      template:
+        ref: ci-triggertemplate

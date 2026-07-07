@@ -1,0 +1,28 @@
+apiVersion: tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: ci-triggertemplate
+spec:
+  params:
+    - name: repo-url
+    - name: branch
+    - name: message
+
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        name: ci-pipelinerun-$(uid)
+      spec:
+        pipelineRef:
+          name: lab5-ci-pipeline
+        params:
+          - name: repo-url
+            value: $(params.repo-url)
+          - name: branch
+            value: $(params.branch)
+          - name: message
+            value: $(params.message)
+        workspaces:
+          - name: shared-workspace
+            emptyDir: {}

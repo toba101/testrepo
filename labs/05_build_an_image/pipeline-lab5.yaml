@@ -1,0 +1,67 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: lab5-ci-pipeline
+spec:
+  params:
+    - name: repo-url
+      type: string
+    - name: branch
+      type: string
+    - name: message
+      type: string
+
+  workspaces:
+    - name: shared-workspace
+
+  tasks:
+    - name: echo-task
+      taskRef:
+        name: echo
+      params:
+        - name: message
+          value: "$(params.message)"
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+
+    - name: checkout-task
+      runAfter:
+        - echo-task
+      taskRef:
+        name: checkout
+      params:
+        - name: repo-url
+          value: "$(params.repo-url)"
+        - name: branch
+          value: "$(params.branch)"
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+
+    - name: eslint-task
+      runAfter:
+        - checkout-task
+      taskRef:
+        name: eslint
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+
+    - name: jest-task
+      runAfter:
+        - eslint-task
+      taskRef:
+        name: jest
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+
+    - name: cleanup-task
+      runAfter:
+        - jest-task
+      taskRef:
+        name: cleanup
+      workspaces:
+        - name: source
+          workspace: shared-workspace

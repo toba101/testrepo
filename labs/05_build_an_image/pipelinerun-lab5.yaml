@@ -1,0 +1,17 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: lab5-ci-pipelinerun
+spec:
+  pipelineRef:
+    name: lab5-ci-pipeline
+  params:
+    - name: repo-url
+      value: https://github.com/ibm-developer-skills-network/ttwst-jhxyb-ci-cd-pipeline_js.git
+    - name: branch
+      value: main
+    - name: message
+      value: "Starting full CI pipeline for Lab 5"
+  workspaces:
+    - name: shared-workspace
+      emptyDir: {}
